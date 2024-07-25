@@ -177,7 +177,7 @@ def logout():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-	    #add_verified_hash('hash')
+        #add_verified_hash('hash')
         #add_malicious_hash('hash')
         #create_user('Username', 'Password')
     app.run(debug=True)
