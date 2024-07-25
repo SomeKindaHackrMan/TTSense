@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TTSense</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212; 
+            color: #e0e0e0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: #1e1e1e; 
+            border: 1px solid #333; 
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 400px;
+            transition: box-shadow 0.3s;
+        }
+        .login-container:hover {
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7);
+        }
+        .login-container h2 {
+            color: #ffffff; 
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-container form input[type="text"],
+        .login-container form input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #444; 
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #333; 
+            color: #e0e0e0; 
+            transition: border-color 0.3s;
+        }
+        .login-container form input[type="text"]:focus,
+        .login-container form input[type="password"]:focus {
+            border-color: #ffffff; 
+            outline: none;
+        }
+        .login-container form input[type="submit"] {
+            background-color: #444; 
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+        .login-container form input[type="submit"]:hover {
+            background-color: #555; 
+        }
+        .login-container .error {
+            color: #f44336;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>TTSense</h2>
+        <form method="post">
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>
