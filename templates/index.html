@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unknown Scripts</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #c9a66b;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .script-container {
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .script-container:hover {
+            background-color: #f8f8f8;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .script-container h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #c9a66b;
+        }
+        .script-container pre {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            display: none;
+            margin-top: 10px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .script-container a {
+            cursor: pointer;
+            color: #c9a66b;
+            text-decoration: none;
+        }
+        .script-container a:hover {
+            text-decoration: underline;
+        }
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav-links a {
+            color: #c9a66b;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1.1em;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function toggleScript(event, hash) {
+            event.preventDefault();
+            var scriptElement = document.getElementById('script-' + hash);
+            if (scriptElement.style.display === 'none' || scriptElement.style.display === '') {
+                scriptElement.style.display = 'block';
+                scriptElement.scrollIntoView({behavior: "smooth", block: "start"});
+            } else {
+                scriptElement.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Unknown Scripts</h1>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/verified">Verified Hashes</a>
+            <a href="/malicious">Malicious Hashes</a>
+            <a href="/logout">Logout</a>
+        </div>
+        {% if unknown_scripts %}
+            {% for item in unknown_scripts %}
+                <div class="script-container">
+                    <h3>
+                        <a href="#" onclick="toggleScript(event, '{{ item.hash }}')">Hash: {{ item.hash }}</a>
+                    </h3>
+                    <pre id="script-{{ item.hash }}">{{ item.script }}</pre>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No unknown scripts found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
