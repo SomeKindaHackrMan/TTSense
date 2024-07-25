@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'  #figure out better storage of all this when deployed
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'b7f5b7fc3d4a4a35b178b0e8f32b0f57e6c2a2bb8a77c09f3b9f61c6d4c86e12'
 app.config['API_KEY'] = 'f2f7d3a6e1b4c9a8f7e0b1c2d3a4e5f6'
@@ -34,18 +36,16 @@ def create_user(username, password):
     if user:
         print(f"User '{username}' already exists.")
         return
-    new_user = User(username=username, password=password)
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
+    new_user = User(username=username, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
     print(f"User '{username}' added successfully.")
-
 
 def require_api_key(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         api_key = request.headers.get('X-API-Key')
-        print(f"Received API Key: {api_key}")
-        print(f"Expected API Key: {app.config['API_KEY']}") 
         if api_key != app.config['API_KEY']:
             return jsonify({"error": "Unauthorized access"}), 401
         return f(*args, **kwargs)
@@ -68,7 +68,6 @@ def clean_hashes_from_unknown():
     unknown_scripts = UnknownScript.query.all()
     for script in unknown_scripts:
         if script.hash in verified_hashes or script.hash in bad_hashes:
-            # Remove script with verified or malicious hash
             db.session.delete(script)
             db.session.commit()
             print(f"Removed script with hash: {script.hash}")
@@ -107,7 +106,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
             return redirect(url_for('index'))
         else:
@@ -119,8 +118,6 @@ def login():
 def receive_scripts():
     try:
         data = request.json
-        print("Received payload:", data)
-
         if not data or 'scripts' not in data:
             return jsonify({"error": "Missing 'scripts' key"}), 400
         
@@ -131,13 +128,10 @@ def receive_scripts():
             script_hash = item['hash']
             script_content = item['script']
 
-            # Check if the hash is verified
             if is_hash_verified(script_hash):
                 return jsonify({"error": f"Hash {script_hash} is verified sent as unknown"}), 400
 
-            # Check if the hash is already in the unknown scripts table
             if not UnknownScript.query.filter_by(hash=script_hash).first():
-                # Add new script to the unknown scripts table
                 new_script = UnknownScript(hash=script_hash, script=script_content)
                 db.session.add(new_script)
                 db.session.commit()
@@ -183,7 +177,7 @@ def logout():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        #create_user('username', 'password')
-        #add_verified_hash('hash')
+	    #add_verified_hash('hash')
         #add_malicious_hash('hash')
+        #create_user('Username', 'Password')
     app.run(debug=True)
