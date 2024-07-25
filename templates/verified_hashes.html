@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified Hashes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9f5e9;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #004d00;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .hash-container {
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .hash-container:hover {
+            background-color: #d1e9d1;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .hash-container p {
+            margin: 0;
+            font-size: 1.1em;
+            color: #004d00;
+        }
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav-links a {
+            color: #004d00;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1.1em;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/malicious">Malicious Hashes</a>
+        </div>
+        <h1>Verified Hashes</h1>
+        {% if verified_hashes %}
+            {% for item in verified_hashes %}
+                <div class="hash-container">
+                    <p>Hash: {{ item.hash }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No verified hashes found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
