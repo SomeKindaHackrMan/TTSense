@@ -1,5 +1,5 @@
 local ngrok_url = "url"
-local api_key = "f2f7d3a6e1b4c9a8f7e0b1c2d3a4e5f6"
+local api_key = ""
 verifiedHashes = {}
 badHashes = {}
 unknownHashes = {}
