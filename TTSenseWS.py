@@ -6,8 +6,8 @@ from functools import wraps
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'b7f5b7fc3d4a4a35b178b0e8f32b0f57e6c2a2bb8a77c09f3b9f61c6d4c86e12'
-app.config['API_KEY'] = 'f2f7d3a6e1b4c9a8f7e0b1c2d3a4e5f6'
+app.config['SECRET_KEY'] = ''
+app.config['API_KEY'] = ''
 db = SQLAlchemy(app)
 
 class VerifiedHash(db.Model):
